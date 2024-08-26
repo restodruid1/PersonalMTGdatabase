@@ -22,7 +22,7 @@ while loop:
 			jsonStr = response.content.decode('utf-8')
 			data = json.loads(jsonStr)
 			print("Cards with {}:".format(cardName))
-			for number, card in enumerate(data["data"]):
+			for number, card in enumerate(data["data"],start=1):
 				print("{}) {}".format(number, card))
 			
 			num = int(input("Enter the number for the card you want: "))
@@ -32,25 +32,31 @@ while loop:
 					print("yes", card)
 					chosenCard = card
 					break
-			print(chosenCard)
+			#print(chosenCard)
 			
 			with open("MTG_Database.txt", "a+") as file:
 				
 				
-				file.write("{}, 0\n".format(chosenCard))
+				#file.write("{}, 0\n".format(chosenCard))
 				try:
 					file.seek(0)
 					for line in file:
+						
 						print(line)
 						line = line.split(",")
 						print(line)
 						word = line[0]
 						count = int(line[1])
+						if word == chosenCard:
+							count += 1
+							file.write("{}, {}\n".format(chosenCard, count))
+							break
+			#FIND EFFICIENT WAY TO OVERWRITE A CARD VALUE THAT ALREADY EXISTS	
 						print(word, count)
 						#line = list(line)
 						#word = line[0:-1]
 						#count = line[-1]
-						
+					file.write("{}, 1\n".format(chosenCard))
 				except:
 					print("File is empty")
 					file.write("placeholder", 0)
