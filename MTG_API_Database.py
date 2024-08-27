@@ -6,7 +6,7 @@ import json
 loop = True
 #file = open("Personal_MTG_Database.txt", "a")
 while loop:
-	cardName = input("Enter Card Name: ")
+	cardName = input("Enter Card Name(Enter q to quit): ")
 	if cardName == "q":
 		print("Exiting Program")
 		break
@@ -19,7 +19,7 @@ while loop:
 	}
 	response = requests.get(url,headers)
 
-	# API Request is Valid
+	# API Request to Search for Card with AutoComplete is Valid
 	if response.status_code == 200:
 		try:
 			# Turn response into dictionary
@@ -33,7 +33,7 @@ while loop:
 			chosenCard = ""
 			for number, card in enumerate(data["data"], start=1):
 				if number == num:
-					print("yes", card)
+					print("You  Selected: ", card)
 					chosenCard = card
 					break
 			#print(chosenCard)
@@ -44,16 +44,15 @@ while loop:
 				try:
 					lines = infile.readlines()
 					size = len(lines)
-					print(size)
-					print(lines)
+					
 					if size == 0:
 						lines = ["{}$ 1\n".format(chosenCard)]
-						print(lines)
+						#print(lines)
 						
 					else:
 						found = False
 						for index, card in enumerate(lines):
-							print(index, card)
+							#print(index, card)
 							line = card.split("$")
 							cardNameTmp = line[0]
 							count = int(line[1]) + 1
@@ -63,6 +62,7 @@ while loop:
 								break
 						if not found:   		
 							lines.append("{}$ 1\n".format(chosenCard))
+							lines.sort()
 				except:
 					print("card database not working")
 
@@ -74,8 +74,7 @@ while loop:
 				
 		except:
 			print("Error? ")
-		else:
-			print("Error? No card matches")
+		
 	    
 	else:
 	    print(f"Error: {response.status_code}")
