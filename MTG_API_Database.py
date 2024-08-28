@@ -63,17 +63,21 @@ while loop:
 						if not found:   		
 							lines.append("{}$ 1\n".format(chosenCard))
 							lines.sort()
-				except:
+				except :
 					print("card database not working")
-
+					
 			with open("MTG_Database.txt", "w") as outfile:			
 					for card in lines:
 						outfile.write(card)	
 						
 			continue	
 				
-		except:
-			print("Error? ")
+		except FileNotFoundError as e:
+			#print("Error? ")
+			print("File not found")
+			#print("File created, try again")
+			with open("MTG_Database.txt", "w") as newfile:
+				print("File Created: Re-Enter Card Name")
 		
 	    
 	else:
